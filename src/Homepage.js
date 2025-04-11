@@ -1,5 +1,6 @@
+import { ScrollProvider } from './scrollContext';
 import React, { useState } from 'react';
-import Intro from './Intro'
+import { ArrowRight, TrendingUp, Shield, Globe, LineChart } from 'lucide-react';
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,27 @@ const HomePage = () => {
   });
   
   const [errors, setErrors] = useState({});
+  const [email, setEmail] = useState('');
+  const [visible, setVisible] = useState(false);
+
+
+  const showPopupForGetStarted = () => {
+    setVisible(true);
+    setTimeout(() => setVisible(false), 2000);
+  };
+
+  const showPopupForStart = () => {
+    setVisible(true);
+    setTimeout(() => setVisible(false), 2000);
+  };
+
+  const scrollOver = (tab)=>{
+    const element = document.getElementById(tab);
+    if(element){
+      element.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+    }
+  };
+  
   
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -80,17 +102,133 @@ const HomePage = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+    showPopupForStart()
     if (validateForm()) {
       //console.log('Form submitted:', formData);
       // Handle form submission
-      alert('Form submitted successfully!This page will some be fully functional');
     }
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0d0d0d] via-[#6b42db] to-[#32312e]">
-    {<Intro/>}
-      {/* Navbar */}
+    <div className="min-h-screen bg-gradient-to-br from-[#0d0d0d] via-[#6b42db] to-[#32312e]" id='Home_tab'>
+
+   {/* Into section */}
+   <div className="">
+      {/* Navigation */}
+      <nav className="z-10 top-0 container mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="text-2xl font-bold flex items-center text-white">
+          <TrendingUp className="mr-2" />
+          <span>Financial Blueprint</span>
+        </div>
+        
+        <div className="hidden md:flex space-x-8 items-center">
+          <a href="#" onClick={()=>scrollOver('Home_tab')} className=" text-white hover:text-yellow-300 transition duration-300">Home</a>         
+          <a href="#" onClick={()=>scrollOver('Footer_tab')} className=" text-white hover:text-yellow-300 transition duration-300">Contact</a>
+          <button onClick={showPopupForGetStarted} className="bg-white text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-indigo-100 transition duration-300">
+            Get Started
+          </button>
+
+          {visible && (
+            <>
+              <div className="fixed inset-0 bg-black opacity-60 z-40"></div> {/* Dimmed background */}
+              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 text-black p-16 rounded-lg z-50 w-120 text-center"> {/* Larger popup */}
+                <p className="text-xl font-semibold mb-4">Coming Soon!</p>
+                <p>This feature is currently under development.</p>                
+              </div>
+            </>
+            )}
+
+        </div>
+        
+        <button className="md:hidden">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </nav>
+      
+      {/* Hero Section */}
+      <section className="container mx-auto px-6 py-12 md:py-24 flex flex-col md:flex-row items-center">
+        <div className="md:w-1/2 mb-12 md:mb-0">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 text-white">
+            Your Future Deserves <span className="text-yellow-400">Better Investments</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-gray-300">
+            Don't just dream about financial freedom. Build it, one smart investment at a time.
+          </p>
+          <form className="flex flex-col sm:flex-row gap-4 mb-8 w-full max-w-md">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white flex-grow"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button className="bg-indigo-200 hover:bg-green-400 px-6 py-2 rounded-lg font-medium transition duration-500 flex items-center justify-center" onClick={handleSubmit}>
+              Start Now
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </button>
+            {visible && (
+            <>
+              <div className="fixed inset-0 bg-black opacity-60 z-40"></div> {/* Dimmed background */}
+              <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 text-black p-16 rounded-lg z-50 w-120 text-center"> {/* Larger popup */}
+                <p className="text-xl font-semibold mb-4">Coming Soon!</p>
+                <p>This feature is currently under development.</p>                
+              </div>
+            </>
+            )}
+
+          </form>
+          <p className="text-gray-400 text-sm">Join use</p>
+        </div>
+        
+        <div className="md:w-1/2 flex justify-center">
+          <div className="relative">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-yellow-300 to-indigo-500 rounded-xl blur opacity-155"></div>
+            <div className=" -5 relative bg-gray-900 p-6 rounded-2xl">
+              <LineChart className="h-64 w-64 text-gray-100" />
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Features */}
+      <section className="container mx-auto px-6 py-16">
+        <h2 className="text-3xl text-white md:text-4xl font-bold text-center mb-16">Why Choose WealthVision</h2>
+        
+        <div className="grid md:grid-cols-3 gap-12">
+          <div className="bg-gray-800 bg-opacity-50 p-8 rounded-xl hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+            <div className="p-4 bg-indigo-600 inline-block rounded-lg mb-4">
+              <TrendingUp className="h-8 w-8" />
+            </div>
+            <h3 className="text-white text-xl font-bold mb-4">Strategic Growth</h3>
+            <p className="text-gray-300">
+              Our data-driven approach identifies opportunities for maximizing returns while managing risk effectively.
+            </p>
+          </div>
+          
+          <div className="bg-gray-800 bg-opacity-50 p-8 rounded-xl hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+            <div className="p-4 bg-indigo-600 inline-block rounded-lg mb-4">
+              <Shield className="h-8 w-8" />
+            </div>
+            <h3 className="text-white text-xl font-bold mb-4">Protected Investments</h3>
+            <p className="text-gray-300">
+              Advanced security measures and diversification strategies to safeguard your financial future.
+            </p>
+          </div>
+          
+          <div className="bg-gray-800 bg-opacity-50 p-8 rounded-xl hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+            <div className="p-4 bg-indigo-600 inline-block rounded-lg mb-4">
+              <Globe className="h-8 w-8" />
+            </div>
+            <h3 className="text-white text-xl font-bold mb-4">Global Opportunities</h3>
+            <p className="text-gray-300">
+              Access international markets and emerging sectors with our worldwide investment network.
+            </p>
+          </div>
+        </div>
+      </section>
+      </div>
       
       
       {/* Hero Section */}
@@ -141,7 +279,7 @@ const HomePage = () => {
                     id="oneTime"
                     name="oneTime"
                     type="checkbox"
-                    className="appearance-none h-5 w-5 border rounded-full bg-gray-100 checked:border-transparent checked:bg-yellow-600 checked:after:content-['✓'] checked:after:text-sm checked:after:flex checked:after:justify-center checked:after:items-center "
+                    className="appearance-none h-5 w-5 border rounded-full bg-gray-100 checked:border-transparent checked:bg-yellow-400 checked:after:content-['✓'] checked:after:text-sm checked:after:flex checked:after:justify-center checked:after:items-center"
                     checked={formData.investmentType === 'oneTime'}
                     onChange={handleChange}
                   />
@@ -152,7 +290,7 @@ const HomePage = () => {
                     id="sip"
                     name="sip"
                     type="checkbox"
-                    className="h-5 w-5 text-gray-600 focus:ring-gray-500 rounded"
+                    className="appearance-none h-5 w-5 border rounded-full bg-gray-100 checked:border-transparent checked:bg-yellow-400 checked:after:content-['✓'] checked:after:text-sm checked:after:flex checked:after:justify-center checked:after:items-center "
                     checked={formData.investmentType === 'sip'}
                     onChange={handleChange}
                   />
@@ -219,12 +357,12 @@ const HomePage = () => {
       </div>
       
       {/* Contact Section */}
-      <div id="contact" className="bg-black/40 py-16">
+      <div id="Footer_tab" className="bg-black/40 py-16">
         <div className="container mx-auto px-4 text-white text-center">
           <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
-          <p className="text-xl mb-4">Have questions? Reach out to our team</p>
-          <p className="mb-4">contact@myof.example.com</p>
-          <p>+1 (555) 123-4567</p>
+          <p className="text-xl mb-4">Have questions? Reach out to below email</p>
+          <p className="mb-4">abhishekdhotri4321@gmail.com</p>
+          <p>+919512856662</p>
         </div>
       </div>
     </div>
